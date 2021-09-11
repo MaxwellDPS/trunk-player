@@ -25,7 +25,8 @@ python3-openid==3.1.0
 pytz==2017.3
 redis==2.10.6
 requests==2.21.0
-psycopg2-binary
+#psycopg2-binary
+psycopg2-binary==2.8.6
 requests-oauthlib==0.8.0
 six==1.11.0
 stripe==1.75.0
