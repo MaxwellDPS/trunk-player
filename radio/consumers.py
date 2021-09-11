@@ -51,7 +51,7 @@ class RadioConsumer(WebsocketConsumer):
     # Receive message from WebSocket
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        message = text_data_json['text']
         try:           
             scan = ScanList.objects.get(name=self.label)
         except KeyError:
@@ -63,8 +63,8 @@ class RadioConsumer(WebsocketConsumer):
 
         # conform to the expected message format.
         try:
-            data = json.loads(message['text'])
+            data = json.loads(message)
         except ValueError:
-            log.error("ws message isn't json text=%s", text_data_json)
+            log.error("ws message isn't json text=%s", text_data)
             return
             
