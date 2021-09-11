@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     #'allauth.socialaccount.providers.instagram',
     'rest_framework',
     'channels',
-    'pinax.stripe',
     'django_select2',
 ]
 
