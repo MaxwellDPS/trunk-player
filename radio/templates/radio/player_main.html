@@ -27,7 +27,7 @@ Loading Data.....
   </div>
   {% else %}
   <div id="anoymous_time_warn" style="display: none" class=" alert alert-danger" role="alert">
-        Your current plan access allows you to listen to radio traffic up to {{ anonymous_time.display }} ago. For more info see the <a href="{% url 'plans' %}">Plans</a> page.
+        Your current access allows you to listen to radio traffic up to {{ anonymous_time.display }} ago. 
   </div>
   {% endif %}
   </div>
@@ -85,9 +85,7 @@ amzn_assoc_rows = "6";
            <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
           <div>
-          <p>This transmission is older than your current plan allows you to listen to.</p>
-          <p>If you would like to hear this and other older transmissions:</p>
-          <p>Visit our <a href="/plans/">plans</a> page to upgrade...</p>
+          <p>This transmission is older than your current access allows you to listen to.</p>
           </div>
           
       </div>

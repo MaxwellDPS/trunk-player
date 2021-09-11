@@ -12,10 +12,8 @@ log = logging.getLogger(__name__)
 class RadioConsumer(WebsocketConsumer):
     def connect(self):
         try:
-            prefix, tg_type, label = self.scope['url_route'].strip('/').split('/')
-            if prefix != 'ws-calls':
-                log.error('user %s invalid ws path=%s', self.scope['user'], self.scope['url_route'])
-                return
+            tg_type =  self.scope['url_route']["kwargs"]["tg_type"]
+            label = self.scope['url_route']["kwargs"]["label"]
         except:
             # setup fake channel so the javascript does not try and reconnect
             tg_type = 'junk'

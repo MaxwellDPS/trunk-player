@@ -13,7 +13,6 @@ table_list = (
     #'auth_group',
     #'auth_group_permissions',
     #'auth_permission',
-    'radio_plan',
     'auth_user',
     #'auth_user_groups',
     #'auth_user_user_permissions',

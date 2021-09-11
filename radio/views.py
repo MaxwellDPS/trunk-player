@@ -221,7 +221,7 @@ def Generic(request, page_name):
     return render(request, template, {'html_object': query_data})
 
 def get_user_profile(user):
-    if user.is_authenticated():
+    if user.is_authenticated:
         user_profile = Profile.objects.get(user=user)
     else:
         try:
@@ -234,7 +234,7 @@ def get_user_profile(user):
 def get_history_allow(user):
     user_profile = get_user_profile(user)
     if user_profile:
-        history_minutes = user_profile.plan.history
+        history_minutes = 0
     else:
         history_minutes = settings.ANONYMOUS_TIME
     return history_minutes
@@ -295,7 +295,7 @@ def TalkGroupFilterBase(request, filter_val, template):
         restrict_talkgroups(self.request, rc_data)
     except Transmission.DoesNotExist:
         raise Http404
-    return render_to_response(template, {'object_list': query_data, 'filter_data': filter_val})
+    return render(request, template, {'object_list': query_data, 'filter_data': filter_val})
 
 
 class ScanViewSet(generics.ListAPIView):
@@ -396,54 +396,6 @@ class TalkGroupList(ListView):
 
 
 
-@login_required
-@csrf_protect
-def upgrade(request):
-    if request.method == 'POST':
-        form = PaymentForm(request.POST)
-        if not form.is_valid():
-            return render(
-                request,
-                'registration/upgrade.html',
-                {'form': form},
-            )
-
-        try:
-            plan = form.cleaned_data.get('plan_type')
-            card_name = form.cleaned_data.get('cardholder_name')
-            stripe_cust = stripe_models.Customer.objects.get(user=request.user)
-            logger.error('Change plan to {} for customer {} Card Name {}'.format(plan, stripe_cust, card_name))
-            stripe_info = stripe_actions.subscriptions.create(customer=stripe_cust, plan=plan, token=request.POST.get('stripeToken'))
-        except stripe.InvalidRequestError as e:
-            messages.error(request, "Error with stripe {}".format(e))
-            logger.error("Error with stripe {}".format(e))
-            return render(
-                request,
-                'registration/upgrade.html',
-                {'form': form},
-            )
-        except stripe.CardError as e:
-            messages.error(request, "<b>Error</b> Sorry there was an error with processing your card:<br>{}".format(e))
-            logger.error("Error with stripe user card{}".format(e))
-            return render(
-                request,
-                'registration/upgrade.html',
-                {'form': form},
-            )
-
-        print('------ STRIPE DEBUG -----')
-        pprint(stripe_info, sys.stderr)
-        return render(
-           request,
-           'registration/upgrade_complete.html',
-        )
-    else:
-        form = PaymentForm()
-        return render(
-           request,
-           'registration/upgrade.html',
-           {'form': form, },
-        )
 
 
 @csrf_protect

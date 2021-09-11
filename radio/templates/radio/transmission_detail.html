@@ -102,7 +102,7 @@
                 {% if not object.audio_file %}
                     <div id="anoymous_time_warn" class=" alert alert-danger" role="alert">
         {% get_user_time user as anonymous_time %}
-        Your current plan access allows you to listen to radio traffic up to {{ anonymous_time.display }} ago. For more info see the <a href="{% url 'plans' %}">Plans</a> page.
+        Your current access allows you to listen to radio traffic up to {{ anonymous_time.display }} ago.
              </div>
          {% endif %}
 
