@@ -20,7 +20,6 @@ incremental
 jsonfield
 msgpack-python
 oauthlib
-pinax-stripe
 python3-openid
 pytz
 redis

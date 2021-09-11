@@ -4,7 +4,7 @@ import re
 import json
 import pytz
 from itertools import chain
-from django.shortcuts import render, get_object_or_404, render_to_response, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.views.generic import ListView
 from django.db.models import Q
@@ -28,9 +28,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import mail_admins
 
 
-import pinax.stripe.actions as stripe_actions
-import pinax.stripe.models as stripe_models
-import stripe
 from allauth.account.models import EmailAddress as allauth_emailaddress
 from pprint import pprint
 from django.contrib import messages
@@ -200,12 +197,12 @@ class TransmissionView(ListView):
 
 def ScanListFilter(request, filter_val):
     template = 'radio/transmission.html'
-    return render_to_response(template, {'filter_data': filter_val, 'api_url': '/api_v1/ScanList'})
+    return render(request, template, {'filter_data': filter_val, 'api_url': '/api_v1/ScanList'})
 
 
 def TalkGroupFilterNew(request, filter_val):
     template = 'radio/transmission_play.html'
-    return render_to_response(template, {'filter_data': filter_val})
+    return render(request,template, {'filter_data': filter_val})
 
 
 def TalkGroupFilterjq(request, filter_val):
@@ -533,58 +530,10 @@ def ScanDetailsList(request, name):
             raise Http404
     if scanlist:
         query_data = scanlist.talkgroups.all()
-    return render_to_response(template, {'object_list': query_data, 'scanlist': scanlist, 'request': request})
+    return render(request,template, {'object_list': query_data, 'scanlist': scanlist, 'request': request})
 
 
-@login_required
-@csrf_protect
-def cancel_plan(request):
-    template = 'radio/cancel.html'
-    if request.method == 'POST':
-        msg = 'User {} ({}) wants to cancel'.format(request.user.username, request.user.pk)
-        mail_admins('Cancel Subscription', msg )
-        return render(request, template, {'complete': True})
-    else:
-        return render(request, template, {'complete': False})
 
-@csrf_protect
-def plans(request):
-    token = None
-    has_verified_email = False
-    plans = None
-    default_plan = None
-    if request.method == 'POST':
-        template = 'radio/subscribed.html'
-        token = request.POST.get('stripeToken')
-        plan = request.POST.get('plan')
-        # See if this user already has a stripe account
-        try:
-            stripe_cust = stripe_models.Customer.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            stripe_actions.customers.create(user=request.user)
-            stripe_cust = stripe_models.Customer.objects.get(user=request.user)
-        try:
-            stripe_info = stripe_actions.subscriptions.create(customer=stripe_cust, plan=plan, token=request.POST.get('stripeToken'))
-        except stripe.CardError as e:
-            template = 'radio/charge_failed.html'
-            logger.error("Error with stripe user card{}".format(e))
-            return render(request, template, {'error_msg': e })
-
-        for t in request.POST:
-          logger.error("{} {}".format(t, request.POST[t]))
-    else:
-        template = 'radio/plans.html'
-        plans = StripePlanMatrix.objects.filter(order__lt=99).filter(active=True)
-        default_plan = Plan.objects.get(pk=Plan.DEFAULT_PK)
-
-        # Check if users email address is verified
-        if request.user.is_authenticated():
-            verified_email = allauth_emailaddress.objects.filter(user=request.user, primary=True, verified=True)
-            if verified_email:
-                has_verified_email = True
-
-
-    return render(request, template, {'token': token, 'verified_email': has_verified_email, 'plans': plans, 'default_plan': default_plan} )
 
 def incident(request, inc_slug):
     template = 'radio/player_main.html'

@@ -58,8 +58,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'radio.custom_middleware.ExtendUserSession',
+    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -217,8 +216,7 @@ TWITTER_LIST_URL = None
 SITE_TITLE = os.environ.get("SITE_TITLE", 'Trunk-Player')
 SITE_EMAIL = os.environ.get("SITE_EMAIL", 'help@example.com')
 
-PINAX_STRIPE_SECRET_KEY = '0'
-PINAX_STRIPE_PUBLIC_KEY = '0'
+
 
 # Set this to the location of your audio files
 AUDIO_URL_BASE = os.environ.get("AUDIO_URL_BASE", '//s3.amazonaws.com/SET-TO-MY-BUCKET/')
@@ -232,9 +230,6 @@ VISABLE_SETTINGS = ['SITE_TITLE', 'AUDIO_URL_BASE', 'GOOGLE_ANALYTICS_PROPERTY_I
 
 ALLOW_ANONYMOUS = os.getenv("ALLOW_ANONYMOUS", 'False').lower() in ('true', '1', 't')
 
-PINAX_STRIPE_SECRET_KEY = 'sk_test_xxxxxxxxxxxxxxxxxxxx'
-PINAX_STRIPE_PUBLIC_KEY = 'pk_test_xxxxxxxxxxxxxxxxxxxx'
-PINAX_STRIPE_INVOICE_FROM_EMAIL = 'help@example.com'
 
 ACCESS_TG_RESTRICT = os.getenv("ACCESS_TG_RESTRICT", 'False').lower() in ('true', '1', 't')
 

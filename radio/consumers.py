@@ -16,7 +16,7 @@ class RadioConsumer(WebsocketConsumer):
             if prefix != 'ws-calls':
                 log.error('user %s invalid ws path=%s', self.scope['user'], self.scope['url_route'])
                 return
-        except ValueError:
+        except:
             # setup fake channel so the javascript does not try and reconnect
             tg_type = 'junk'
             label = 'junk'

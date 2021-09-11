@@ -42,7 +42,6 @@ table_list = (
     'radio_unit',
     'radio_webhtml',
     'radio_siteoption',
-    'radio_stripeplanmatrix',
     'socialaccount_socialaccount',
     'socialaccount_socialapp',
     'socialaccount_socialapp_sites',

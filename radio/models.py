@@ -259,12 +259,7 @@ class Transmission(models.Model):
 
 
     def _get_history_allow(self,user):
-        user_profile = self._get_user_profile(user)
-        if user_profile:
-            history_minutes = user_profile.plan.history
-        else:
-            history_minutes = settings.ANONYMOUS_TIME
-        return history_minutes
+        return 0
 
 
     def audio_file_history_check(self, user):
@@ -422,18 +417,8 @@ class TalkGroupAccess(models.Model):
         return '{}'.format(self.name)
 
 
-class Plan(models.Model):
-    DEFAULT_PK = 1 # This is added via a migration
-    name = models.CharField(max_length=30, unique=True)
-    history = models.IntegerField(default=0, help_text='visible history in minutes')
-
-    def __str__(self):
-        return '{}'.format(self.name)
-
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    plan = models.ForeignKey(Plan, default=Plan.DEFAULT_PK, on_delete=models.CASCADE)
     talkgroup_access = models.ManyToManyField(TalkGroupAccess, blank=True)
 
 
@@ -444,27 +429,6 @@ class WebHtml(models.Model):
     def __str__(self):
         return self.name
 
-
-class StripePlanMatrix(models.Model):
-    name = models.CharField(max_length=30, unique=True)
-    #stripe_plan = models.ForeignKey(pinax_Plan, on_delete=models.CASCADE)
-    radio_plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
-    active = models.BooleanField(default=True)
-    order = models.IntegerField(default=99)
-
-    class Meta:
-        ordering = ["order"]
-
-
-    def __str__(self):
-       return self.name
-
-
-    def stripe_amount(self):
-       return int(self.stripe_plan.amount * 100)
-
-    def history_days(self):
-       return int(self.radio_plan.history / 1440)
 
 
 class SiteOption(models.Model):
@@ -489,8 +453,7 @@ class SiteOption(models.Model):
 def create_profile(sender, **kwargs):
     user = kwargs["instance"]
     if kwargs["created"]:
-        default_plan = Plan.objects.get(pk=Plan.DEFAULT_PK)
-        up = Profile(user=user, plan=default_plan)
+        up = Profile(user=user)
         up.save()
         try:
             for tg in TalkGroupAccess.objects.filter(default_group=True):

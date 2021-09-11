@@ -80,10 +80,6 @@ urlpatterns += [
     url(r'^unitupdategood/$',  TemplateView.as_view(template_name='radio/unitupdategood.html')),
 ]
 
-if settings.OPEN_SITE:
-    urlpatterns += [url(r"^payments/", include("pinax.stripe.urls")),]
-    urlpatterns += [url(r'^upgrade/$', views.upgrade, name='upgrade'),]
-
 urlpatterns += [
     url(r'^city/(?P<slug>[-\w]+)/$',views.cityDetailView, name='city_detail'),
     url(r'^city/$',views.cityListView, name='city_list'),

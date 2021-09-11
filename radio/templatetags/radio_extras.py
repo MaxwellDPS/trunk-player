@@ -18,7 +18,7 @@ def settings_anonymous_time():
 def get_user_time(user):
     print("Template TAG USER {}".format(user))
     history = {}
-    if user.is_authenticated():
+    if user.is_authenticated:
         print("I am logged in")
         user_profile = Profile.objects.get(user=user)
     else:
@@ -29,7 +29,7 @@ def get_user_time(user):
             raise ImproperlyConfigured('ANONYMOUS_USER is missing from User table, was "./manage.py migrations" not run?')
         user_profile = Profile.objects.get(user=anon_user)
     if user_profile:
-        history.update(minutes = user_profile.plan.history)
+        history.update(minutes = 0)
     else:
         history.update(minutes = settings.ANONYMOUS_TIME)
     history.update(hours = history['minutes'] / 60)

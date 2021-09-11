@@ -16,7 +16,8 @@ application = ProtocolTypeRouter({
     # WebSocket chat handler
     "websocket": AuthMiddlewareStack(
         URLRouter([
-            url(r"^chat/admin/$", RadioConsumer.as_asgi())
+            url(r"^ws-calls/<str:type>/<str:tg>", RadioConsumer.as_asgi()),
+            url(r"^ws-calls/", RadioConsumer.as_asgi())
         ])
     ),
 })
