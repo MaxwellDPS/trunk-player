@@ -7,9 +7,9 @@ services:
       - POSTGRES_PASSWORD=password1234
 
   app:
-    # build:
-    #   context: .
-    image: maxwelldps/trunk-player:latest
+    build:
+      context: .
+    #image: maxwelldps/trunk-player:latest
     ports:
       - "80:80"
     volumes:

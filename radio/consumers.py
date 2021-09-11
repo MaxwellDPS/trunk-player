@@ -1,13 +1,49 @@
 import re
 import json
 import logging
-from channels import Group
-from channels.sessions import channel_session
-from channels.auth import channel_session_user, channel_session_user_from_http
+from asgiref.sync import async_to_sync
+from channels.generic.websocket import WebsocketConsumer
 from .models import ScanList, TalkGroup
 
 logging.basicConfig(format='%(asctime)s %(message)s')
 log = logging.getLogger(__name__)
+
+
+class RadioConsumer(WebsocketConsumer):
+    def connect(self):
+        self.
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_group_name = 'chat_%s' % self.room_name
+
+        # Join room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+        self.accept()
+
+    def disconnect(self, close_code):
+        # Leave room group
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    # Receive message from WebSocket
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+
+        # Send message to room group
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': message
+            }
+        )
+
 
 @channel_session_user_from_http
 def ws_connect(message):

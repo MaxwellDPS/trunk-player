@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'django_select2',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -169,11 +169,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "audio_files")
 # Channel settings
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379')],
-        },
-        "ROUTING": "radio.routing.channel_routing",
+        }
     },
 }
 
