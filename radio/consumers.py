@@ -68,3 +68,9 @@ class RadioConsumer(WebsocketConsumer):
             log.error("ws message isn't json text=%s", text_data)
             return
             
+
+    def radio_message(self, event):
+        message = event['text']
+
+        # Send message to WebSocket
+        self.send(text_data=(message))

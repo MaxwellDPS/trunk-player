@@ -305,15 +305,27 @@ def send_mesg(sender, instance, **kwargs):
     tg.save()
     groups = tg.scanlist_set.all()
     for g in groups:        
-        async_to_sync(channel_layer.group_send)('livecall-scan-'+g.slug, {'text': json.dumps(instance.as_dict())})
+        async_to_sync(channel_layer.group_send)(
+        'livecall-scan-'+g.slug, {
+            'type':'radio_message',
+            'text': json.dumps(instance.as_dict())
+        })
 
-        #Group('livecall-scan-'+g.slug, ).send({'text': json.dumps(instance.as_dict())})
-    async_to_sync(channel_layer.group_send)('livecall-tg-' + tg.slug, {'text': json.dumps(instance.as_dict())})
-    #Group('livecall-tg-' + tg.slug, ).send({'text': json.dumps(instance.as_dict())})
+
+    async_to_sync(channel_layer.group_send)(
+        'livecall-tg-' + tg.slug, {
+            'type':'radio_message',
+            'text': json.dumps(instance.as_dict())
+        })
+
     
     # Send notification to default group all the time
-    async_to_sync(channel_layer.group_send)('livecall-scan-default', {'text': json.dumps(instance.as_dict())})
-    #Group('livecall-scan-default').send({'text': json.dumps(instance.as_dict())})
+    async_to_sync(channel_layer.group_send)(
+        'livecall-scan-default', {
+            'type':'radio_message',
+            'text': json.dumps(instance.as_dict())
+        })
+
 
 
 

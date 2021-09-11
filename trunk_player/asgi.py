@@ -17,6 +17,7 @@ application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter([
             url(r"^ws-calls/(?P<tg_type>[^/]+)/(?P<label>[^/]+)", RadioConsumer.as_asgi()),
+            url(r"^ws-calls/(?P<tg_type>[^/]+)/$", RadioConsumer.as_asgi()),
             url(r"^ws-calls/$", RadioConsumer.as_asgi())
         ])
     ),
