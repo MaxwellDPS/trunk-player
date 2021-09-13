@@ -30,7 +30,7 @@ services:
       - ANONYMOUS_TIME=0
       - SITE_TITLE=TESTING
       - SITE_EMAIL=no@no.io
-      - AUDIO_URL_BASE=/audio/
+      - AUDIO_URL_BASE=/audio_files/
       - ALLOW_ANONYMOUS=False
       - ACCESS_TG_RESTRICT=False
       - TALKGROUP_RECENT_LENGTH=0

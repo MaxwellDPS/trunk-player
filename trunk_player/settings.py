@@ -82,7 +82,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'trunk_player.wsgi.application'
-
+ASGI_APPLICATION = "trunk_player.asgi.channel_layer"
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -143,6 +143,7 @@ if os.getenv("FORCE_SECURE", 'False').lower() in ('true', '1', 't'):
   # Honor the 'X-Forwarded-Proto' header for request.is_secure()
   SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
@@ -156,7 +157,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50
 }
@@ -216,7 +217,7 @@ TWITTER_LIST_URL = None
 SITE_TITLE = os.environ.get("SITE_TITLE", 'Trunk-Player')
 SITE_EMAIL = os.environ.get("SITE_EMAIL", 'help@example.com')
 
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Set this to the location of your audio files
 AUDIO_URL_BASE = os.environ.get("AUDIO_URL_BASE", '//s3.amazonaws.com/SET-TO-MY-BUCKET/')
