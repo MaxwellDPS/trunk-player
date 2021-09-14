@@ -76,7 +76,6 @@ class Unit(models.Model):
     dec_id = models.IntegerField()
     description = models.CharField(max_length=100, blank=True, null=True)
     agency = models.ForeignKey(Agency, default=settings.RADIO_DEFAULT_UNIT_AGENCY, on_delete=models.CASCADE)
-    #agency = models.ForeignKey(Agency, default=2)
     type = models.CharField(max_length=1, choices=choice.RADIO_TYPE_CHOICES, default=choice.RADIO_TYPE_MOBILE)
     number = models.IntegerField(default=1)
     system = models.ForeignKey(System, default=0, on_delete=models.CASCADE)
