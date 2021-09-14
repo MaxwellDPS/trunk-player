@@ -1,13 +1,10 @@
 {% extends "radio/site_base.html" %}
 {% load radio_extras %}
-{% load socialaccount %}
 {% block main-nav %}
 {% include "radio/site_live_nav.html" %}
 {% endblock %}
-
 {% block main-body %}
 {% get_setting 'OPEN_SITE' as open_site %}
-{% get_setting 'ALLOW_GOOGLE_SIGNIN' as allow_google %}
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 col-md-8 col-lg-8">
@@ -21,7 +18,7 @@
 {% if form.errors %}
 <p></p>
 <div class="alert alert-danger">
-Your username and password didn't match. Please try again. If you have an account you can <a href="{% url 'account_reset_password' %}">recover your password</a>. {% if open_site %} Or create a <a href="{% url 'register' %}{% if next %}?next={{ next}}{% endif %}">new account</a>. {% else %}WELL{% endif %}
+Your username and password didn't match. Please try again.  {% if open_site %} Or create a <a href="{% url 'register' %}{% if next %}?next={{ next}}{% endif %}">new account</a>. {% else %}WELL{% endif %}
 </div>
 {% endif %}
 
@@ -49,7 +46,7 @@ Your username and password didn't match. Please try again. If you have an accoun
 </table>
 
 <input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />{% if allow_google %} <big> OR <a href="{% provider_login_url "google" %}"><img src="/static/radio/img/btn_google_signin_dark_normal_web.png"></a> </big>{% endif %}
+<input type="hidden" name="next" value="{{ next }}" />
 </form>
 <hr>
 {% if open_site %}
@@ -70,11 +67,6 @@ Your username and password didn't match. Please try again. If you have an accoun
 
 
 {% endif %}
-{% get_setting 'TWITTER_ACTIVE' as twitter_active %}
-{% if twitter_active %}
-<a class="twitter-timeline" data-height="1200" href="{% get_setting 'TWITTER_LIST_URL' %}">Alerts</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-{% endif %}
-
                   </div>
 
 	</div>

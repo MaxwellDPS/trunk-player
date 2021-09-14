@@ -28,7 +28,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import mail_admins
 
 
-from allauth.account.models import EmailAddress as allauth_emailaddress
 from pprint import pprint
 from django.contrib import messages
 import logging

@@ -41,10 +41,6 @@ table_list = (
     'radio_unit',
     'radio_webhtml',
     'radio_siteoption',
-    'socialaccount_socialaccount',
-    'socialaccount_socialapp',
-    'socialaccount_socialapp_sites',
-    'socialaccount_socialtoken',
     )
 
 
