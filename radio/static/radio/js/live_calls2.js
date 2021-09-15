@@ -42,7 +42,6 @@ function check_if_rebuild(data) {
           } else {
               tg_array = null;
           }
-          console.log("TG Array is " + tg_array);
 
           if(tg_array) {
             if (tg_array.includes(data["talkgroup_slug"])){
