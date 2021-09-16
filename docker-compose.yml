@@ -7,9 +7,9 @@ services:
       - POSTGRES_PASSWORD=password1234
 
   app:
-    # build:
-    #   context: .
-    image: maxwelldps/trunk-player:latest
+    build:
+      context: .
+    #image: maxwelldps/trunk-player:latest
     ports:
       - "80:80"
     volumes:
@@ -30,12 +30,11 @@ services:
       - ANONYMOUS_TIME=0
       - SITE_TITLE=TESTING
       - SITE_EMAIL=no@no.io
-      - AUDIO_URL_BASE=/audio/
+      - AUDIO_URL_BASE=/audio_files/
       - ALLOW_ANONYMOUS=False
       - ACCESS_TG_RESTRICT=False
       - TALKGROUP_RECENT_LENGTH=0
       - OPEN_SITE=False
-      - ALLOW_GOOGLE_SIGNIN=False
       - FIX_AUDIO_NAME=False
       - TRANS_DATETIME_FORMAT=%H:%M:%S %m/%d/%Y
       - GOOGLE_ANALYTICS_PROPERTY_ID=0

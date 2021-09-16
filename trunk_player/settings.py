@@ -41,26 +41,17 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'local_override',
     'radio.apps.RadioConfig',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-    #'allauth.socialaccount.providers.facebook',
-    #'allauth.socialaccount.providers.instagram',
     'rest_framework',
     'channels',
-    'pinax.stripe',
     'django_select2',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'radio.custom_middleware.ExtendUserSession',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -84,7 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'trunk_player.wsgi.application'
-
+ASGI_APPLICATION = "trunk_player.asgi.channel_layer"
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -105,11 +96,7 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
 AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -132,33 +119,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = str(os.getenv("TZ", 'America/Los_Angeles'))
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 if os.getenv("FORCE_SECURE", 'False').lower() in ('true', '1', 't'):
   # Honor the 'X-Forwarded-Proto' header for request.is_secure()
   SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-
-#STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, "audio_files"),
-#]
-
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50
 }
@@ -169,11 +148,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "audio_files")
 # Channel settings
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379')],
-        },
-        "ROUTING": "radio.routing.channel_routing",
+        }
     },
 }
 
@@ -193,34 +171,18 @@ ANONYMOUS_TIME = int(os.environ.get("ANONYMOUS_TIME", '43200')) # 1 Month (60min
 
 # This Agency must exist in radio.Agency 
 RADIO_DEFAULT_UNIT_AGENCY = 0
-
 SITE_ID = 1
-
-SOCIALACCOUNT_PROVIDERS = \
-    { 'google':
-        { 'SCOPE': ['profile', 'email'],
-          'AUTH_PARAMS': { 'access_type': 'online' } }}
 
 ACCOUNT_AUTHENTICATION_METHOD="username_email"
 ACCOUNT_EMAIL_REQUIRED=True
 LOGIN_REDIRECT_URL="/"
 
-AMAZON_ADDS = False
-AMAZON_AD_TRACKING_ID = 'scanoc-20'
-AMAZON_AD_LINK_ID = '366e01afa07db536277fa926bed3cb27'
-AMAZON_AD_EMPHASIZE_CATEGORIES = '15684181,13900871,172282,3760901,16310091,229534'
-AMAZON_AD_FALL_BACK_SEARCH = ['fire extinguisher', 'first aid',]
-
 GOOGLE_ANALYTICS_PROPERTY_ID = os.environ.get("GOOGLE_ANALYTICS_PROPERTY_ID", '0')
-
-TWITTER_ACTIVE = False
-TWITTER_LIST_URL = None
 
 SITE_TITLE = os.environ.get("SITE_TITLE", 'Trunk-Player')
 SITE_EMAIL = os.environ.get("SITE_EMAIL", 'help@example.com')
 
-PINAX_STRIPE_SECRET_KEY = '0'
-PINAX_STRIPE_PUBLIC_KEY = '0'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Set this to the location of your audio files
 AUDIO_URL_BASE = os.environ.get("AUDIO_URL_BASE", '//s3.amazonaws.com/SET-TO-MY-BUCKET/')
@@ -229,14 +191,11 @@ AUDIO_URL_BASE = os.environ.get("AUDIO_URL_BASE", '//s3.amazonaws.com/SET-TO-MY-
 JS_SETTINGS = ['SITE_TITLE', 'AUDIO_URL_BASE']
 
 # Which settings are aviable to the template tag GET_SETTING
-VISABLE_SETTINGS = ['SITE_TITLE', 'AUDIO_URL_BASE', 'GOOGLE_ANALYTICS_PROPERTY_ID', 'COLOR_CSS', 'SITE_EMAIL', 'PINAX_STRIPE_PUBLIC_KEY', 'TWITTER_ACTIVE', 'TWITTER_LIST_URL', 'SHOW_STRIPE_PLANS', 'OPEN_SITE', 'ALLOW_GOOGLE_SIGNIN']
+VISABLE_SETTINGS = ['SITE_TITLE', 'AUDIO_URL_BASE', 'GOOGLE_ANALYTICS_PROPERTY_ID', 'COLOR_CSS', 'SITE_EMAIL', 'OPEN_SITE']
 
 
 ALLOW_ANONYMOUS = os.getenv("ALLOW_ANONYMOUS", 'False').lower() in ('true', '1', 't')
 
-PINAX_STRIPE_SECRET_KEY = 'sk_test_xxxxxxxxxxxxxxxxxxxx'
-PINAX_STRIPE_PUBLIC_KEY = 'pk_test_xxxxxxxxxxxxxxxxxxxx'
-PINAX_STRIPE_INVOICE_FROM_EMAIL = 'help@example.com'
 
 ACCESS_TG_RESTRICT = os.getenv("ACCESS_TG_RESTRICT", 'False').lower() in ('true', '1', 't')
 
@@ -245,7 +204,6 @@ TALKGROUP_RECENT_LENGTH = int(os.getenv("TALKGROUP_RECENT_LENGTH", '15'))  #  Mi
 ADD_TRANS_AUTH_TOKEN = os.environ.get("ADD_TRANS_AUTH_TOKEN", '7cf5857c61284') # Token to allow adding transmissions
 
 OPEN_SITE = os.getenv("OPEN_SITE", 'False').lower() in ('true', '1', 't') # If False new users cannot sign up
-ALLOW_GOOGLE_SIGNIN = os.getenv("ALLOW_GOOGLE_SIGNIN", 'False').lower() in ('true', '1', 't')
 FIX_AUDIO_NAME = os.getenv("FIX_AUDIO_NAME", 'False').lower() in ('true', '1', 't')
 TRANS_DATETIME_FORMAT = os.environ.get("TRANS_DATETIME_FORMAT", '%H:%M:%S %m/%d/%Y')
 

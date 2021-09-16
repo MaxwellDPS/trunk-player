@@ -40,7 +40,7 @@ def nothing_to_do(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('radio', '0031_webhtml'),
+        ('radio', '0001_initial'),
     ]
 
     operations = [

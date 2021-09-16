@@ -1,6 +1,5 @@
 {% extends "radio/site_base.html" %}
 {% load radio_extras %}
-{% load socialaccount %}
 {% block main-nav %}
 {% include "radio/site_live_nav.html" %}
 {% endblock %}
@@ -19,10 +18,6 @@
 
 		</div>
                 <div class="col-md-4 col-lg-4">
-{% get_setting 'TWITTER_ACTIVE' as twitter_active %}
-{% if twitter_active %}
-<a class="twitter-timeline" data-height="1200" href="{% get_setting 'TWITTER_LIST_URL' %}">Alerts</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-{% endif %}
 
                   </div>
 
