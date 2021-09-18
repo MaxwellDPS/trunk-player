@@ -4,14 +4,25 @@ services:
   db:
     image: postgres
     environment:
+      - POSTGRES_DB=tr
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password1234
 
-  app:
-    build:
-      context: .
-    #image: maxwelldps/trunk-player:latest
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    environment: 
+      - RABBITMQ_DEFAULT_USER=trunk_player
+      - RABBITMQ_DEFAULT_PASS=trunk_player
     ports:
-      - "80:80"
+        - 5672:5672
+        - 15672:15672
+
+  app:
+    # build:
+    #   context: .
+    image: maxwelldps/trunk-player:latest
+    ports:
+      - "8080:8080"
     volumes:
       #- .:/app/trunkplayer
       - audio:/app/trunkplayer/audio_files
@@ -22,6 +33,7 @@ services:
       - SQL_USER=postgres
       - SQL_PASSWORD=password1234
       - SQL_HOST=db
+      - RABBITMQ_URL=amqp://trunk_player:trunk_player@rabbitmq:5672
       - MIGRATE_DB=1
       - SECRET_KEY="%2%xjx4c3obf_xa8hsdbd@ci+8!4)@x16_!auo*h(%*p_z(g"
       - DJANGO_ALLOWED_HOSTS=*
@@ -37,10 +49,10 @@ services:
       - OPEN_SITE=False
       - FIX_AUDIO_NAME=False
       - TRANS_DATETIME_FORMAT=%H:%M:%S %m/%d/%Y
-      - GOOGLE_ANALYTICS_PROPERTY_ID=0
-
+      - GOOGLE_ANALYTICS_PROPERTY_ID=0      
     depends_on:
       - db
+      - rabbitmq
 
 volumes: 
   audio:

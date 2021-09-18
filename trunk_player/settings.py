@@ -148,9 +148,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "audio_files")
 # Channel settings
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "channels_rabbitmq.core.RabbitmqChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379')],
+            "host": os.environ.get('RABBITMQ_URL', 'amqp://guest:guest@rabbitmq:5672/%2F'),
         }
     },
 }

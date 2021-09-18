@@ -82,6 +82,8 @@ class ScanListAdmin(admin.ModelAdmin):
     save_as = True
     save_on_top = True
 
+# class ScanListAdmin(admin.ModelAdmin):
+#     autocomplete_fields= ('talkgroups',)    
 
 class ProfileInline(admin.StackedInline):
     model = Profile
