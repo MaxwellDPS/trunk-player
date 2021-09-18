@@ -1,6 +1,6 @@
 FROM python:3.6 
 RUN apt-get update && \
-    apt-get -y install nginx redis-server tzdata && \
+    apt-get -y install nginx tzdata && \
     rm -rf /var/lib/apt/lists/* 
 
 RUN mkdir -p /app/trunkplayer
