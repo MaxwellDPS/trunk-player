@@ -1,9 +1,11 @@
+from os import system
 import re
 import json
 import logging
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from .models import ScanList, TalkGroup
+from .models import ScanList, TalkGroup, System
+
 
 logging.basicConfig(format='%(asctime)s %(message)s')
 log = logging.getLogger(__name__)

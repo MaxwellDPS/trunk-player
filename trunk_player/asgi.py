@@ -9,6 +9,7 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 
 from radio.consumers import RadioConsumer
+from telemetry.consumers import TelemetryConsumer
 
 channel_layer = ProtocolTypeRouter({
     "http": django_asgi_app,
@@ -18,7 +19,8 @@ channel_layer = ProtocolTypeRouter({
         URLRouter([
             url(r"^ws-calls/(?P<tg_type>[^/]+)/(?P<label>[^/]+)", RadioConsumer.as_asgi()),
             url(r"^ws-calls/(?P<tg_type>[^/]+)/$", RadioConsumer.as_asgi()),
-            url(r"^ws-calls/$", RadioConsumer.as_asgi())
+            url(r"^ws-calls/$", RadioConsumer.as_asgi()),
+            url(r"^ws/telemetry/(?P<recorder_uuid>[^/]+)$", TelemetryConsumer.as_asgi())
         ])
     ),
 })
