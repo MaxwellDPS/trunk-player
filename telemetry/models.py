@@ -24,18 +24,17 @@ log = logging.getLogger(__name__)
 
 class Source(models.Model):
     source = models.IntegerField()
-    position = models.IntegerField()
-    time = models.DateTimeField()
     signal_system = models.CharField(max_length=50)
     emergency = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"[{self.signal_system}] {str(self.source)}"
+
 class Freq(models.Model):
     freq = models.IntegerField()
-    spikes = models.IntegerField()
-    time = models.DateTimeField()
-    errors = models.IntegerField()
-    position = models.IntegerField()
-    length = models.IntegerField()
+
+    def __str__(self):
+        return str(self.freq/1000000)
 
 class Call(models.Model):
     call_id = models.CharField(unique=True, max_length=255)
@@ -65,6 +64,9 @@ class Call(models.Model):
 
     sourceList = models.ManyToManyField(Source)
     freqList = models.ManyToManyField(Freq)
+
+    def __str__(self):
+        return f"[{self.call_id}] {self.talkgrouptag}"
 
 class SystemStatus(models.Model):
     system =  models.ForeignKey(System, unique=True, on_delete=CASCADE)

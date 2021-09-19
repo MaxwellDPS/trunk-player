@@ -6,8 +6,6 @@ class source:
     def __init__(self, json):
         self.json = json
         self.source = int(json["source"])
-        self.position = int(float(json["position"]))
-        self.time = datetime.fromtimestamp(int(json["time"]))
         self.signal_system = json["signal_system"]
 
         if json["emergency"] == "false":
@@ -19,12 +17,6 @@ class freq:
     def __init__(self, json):
         self.json = json
         self.freq = int(float(json["freq"]))
-        self.spikes = int(float(json["spikes"]))
-        self.errors = int(float(json["errors"]))
-        self.position = int(float(json["position"]))
-        self.length = int(float(json["length"]))
-
-        self.time = datetime.fromtimestamp(int(json["time"]))
 
 class call:
     def __init__(self, json):
@@ -85,20 +77,14 @@ class call:
 
 def get_or_create_Source(sourcex:source):
     if Source.objects.filter(source = sourcex.source,
-                position = sourcex.position,
-                time = sourcex.time,
                 signal_system = sourcex.signal_system,
                 emergency = sourcex.emergency):
         return Source.objects.get(source = sourcex.source,
-                position = sourcex.position,
-                time = sourcex.time,
                 signal_system = sourcex.signal_system,
                 emergency = sourcex.emergency)
     else:
         sourceX = Source(
                 source = sourcex.source,
-                position = sourcex.position,
-                time = sourcex.time,
                 signal_system = sourcex.signal_system,
                 emergency = sourcex.emergency            
             )
@@ -106,25 +92,10 @@ def get_or_create_Source(sourcex:source):
         return sourceX
 
 def get_or_create_Freq(freqx:freq):
-    if Freq.objects.filter(freq = freqx.freq,
-                spikes = freqx.spikes,
-                time = freqx.time,
-                errors = freqx.errors,
-                position = freqx.position,
-                length = freqx.length):
-        return Freq.objects.get(freq = freqx.freq,
-                spikes = freqx.spikes,
-                time = freqx.time,
-                errors = freqx.errors,
-                position = freqx.position,
-                length = freqx.length)
+    if Freq.objects.filter(freq = freqx.freq):
+        return Freq.objects.get(freq = freqx.freq)
     else:
-        FreqX = Freq(freq = freqx.freq,
-                spikes = freqx.spikes,
-                time = freqx.time,
-                errors = freqx.errors,
-                position = freqx.position,
-                length = freqx.length)
+        FreqX = Freq(freq = freqx.freq)
         FreqX.save()
         return FreqX
 
