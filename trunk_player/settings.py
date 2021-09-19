@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'local_override',
     'radio.apps.RadioConfig',
+    'telemetry',
     'rest_framework',
     'channels',
     'django_select2',

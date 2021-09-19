@@ -55,6 +55,7 @@ class City(models.Model):
 class System(models.Model):
     name = models.CharField(max_length=100, db_index=True, unique=True)
     system_id = models.CharField(max_length=20, blank=True, null=True)
+    recorder_uuid = models.UUIDField(default=uuid.uuid4)
 
     def __str__(self):
         return self.name

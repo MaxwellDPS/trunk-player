@@ -18,12 +18,12 @@ services:
         - 15672:15672
 
   app:
-    # build:
-    #   context: .
-    image: maxwelldps/trunk-player:latest
+    build:
+      context: .
+    #image: maxwelldps/trunk-player:latest
     ports:
       - "8080:8080"
-      - ""
+      - "8443:8443"
     volumes:
       #- .:/app/trunkplayer
       - audio:/app/trunkplayer/audio_files
