@@ -48,15 +48,13 @@ class TelemetryConsumer(WebsocketConsumer):
         except KeyError:
             log.error('no valid system found')
             return
-        except ScanList.DoesNotExist:
-            log.error('recieved message, but System does not exist label=%s', self.recorder_uuid)
-            return
+       
 
         # conform to the expected message format.
-        try:
-            log.error(json.dumps(message, indent=4))
-            handleMessage(message, tx_type)
-        except ValueError:
-            log.error("ws message isn't json text=%s", text_data)
-            return
+        #try:
+        log.error(f"Got {tx_type} Message")
+        handleMessage(message, tx_type, self.recorder_uuid)
+        #except ValueError:
+       #     log.error("ws message isn't json text=%s", text_data)
+       #     return
             

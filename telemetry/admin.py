@@ -6,3 +6,7 @@ from django.contrib.auth.models import User
 
 from .models import *
 
+admin.site.register(Call)
+admin.site.register(Freq)
+admin.site.register(Source)
+admin.site.register(SystemStatus)

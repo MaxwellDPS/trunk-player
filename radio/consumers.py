@@ -5,7 +5,7 @@ import logging
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from .models import ScanList, TalkGroup, System
-from .telemetry import handleMessage
+
 
 logging.basicConfig(format='%(asctime)s %(message)s')
 log = logging.getLogger(__name__)
