@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'radio.apps.RadioConfig',
     'telemetry',
     'rest_framework',
+    'rest_framework_jwt',
+    'corsheaders',
     'channels',
     'django_select2',
 ]
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -115,6 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# JWT_AUTH = {
+#     'JWT_RESPONSE_PAYLOAD_HANDLER': 'mysite.utils.my_jwt_response_handler'
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -140,8 +146,26 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
     'PAGE_SIZE': 50
 }
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': False,
+
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+
+}
+
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+    'http://localhost:8080'
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "audio_files")
