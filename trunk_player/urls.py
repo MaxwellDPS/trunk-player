@@ -22,6 +22,8 @@ from django.views.generic.base import RedirectView
 from rest_framework import routers
 from radio import views
 from django.contrib.auth.decorators import login_required
+from rest_framework_jwt.views import obtain_jwt_token
+
 
 router = routers.DefaultRouter()
 router.register(r'transmission', views.TransmissionViewSet)
@@ -32,6 +34,7 @@ router.register(r'menutalkgrouplist', views.MenuTalkGroupListViewSet)
 
 
 urlpatterns = [
+    url(r'^token-auth/$', obtain_jwt_token),
     #url('^$', TemplateView.as_view(template_name='radio/index_beta.html')),
     url('^$', views.Generic, {'page_name': 'index'}, name='index'),
     url('^', include('django.contrib.auth.urls')),

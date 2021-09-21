@@ -4,6 +4,7 @@ from .models import Transmission, TalkGroup, Unit, ScanList, MenuScanList, MenuT
 from rest_framework.fields import CurrentUserDefault, SerializerMethodField
 
 
+
 class TalkGroupSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="talkgroups-detail")
     class Meta:
