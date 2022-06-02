@@ -1,6 +1,6 @@
 FROM python:3.9
 RUN apt-get update && \
-    apt-get -y install nginx redis-server ssl-cert tzdata && \
+    apt-get -y install nginx redis-server ssl-cert tzdata libpq-dev build-essential && \
     rm -rf /var/lib/apt/lists/* 
 
 RUN mkdir -p /app/trunkplayer
@@ -13,7 +13,9 @@ ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
 # install dependencies
 ADD requirements.txt /app/trunkplayer
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --upgrade pip 
+RUN pip install -r requirements.txt
+RUN pip install psycopg2-binary --no-binary psycopg2-binary 
 
 RUN mkdir -p /var/log/trunk-player/
 
