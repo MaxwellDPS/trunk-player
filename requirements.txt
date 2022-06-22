@@ -15,7 +15,7 @@ constantly==15.1.0
 cryptography==3.4.8
 daphne==3.0.2
 defusedxml==0.7.1
-Django==3.2.7
+Django==3.2.13
 django-appconf==1.0.4
 django-ipware==2.1.0
 django-redis==5.0.0
@@ -34,7 +34,7 @@ psycopg2-binary==2.9.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
-PyJWT==2.1.0
+PyJWT==2.4.0
 pyOpenSSL==20.0.1
 python3-openid==3.2.0
 pytz==2021.1
@@ -46,7 +46,7 @@ six==1.16.0
 sqlparse==0.4.2
 stripe==2.60.0
 tinys3==0.1.12
-Twisted==21.7.0
+Twisted==22.4.0rc1
 txaio==21.2.1
 typing-extensions==3.10.0.2
 urllib3==1.26.6
